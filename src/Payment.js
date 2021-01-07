@@ -6,7 +6,7 @@ import { useStateValue } from './StateProvider'
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js"
 import CurrencyFormat from 'react-currency-format';
 import { getBasketTotal } from './reducer';
-import axios from 'axios';
+import axios from './axios'
 
 
 function Payment() {
@@ -37,6 +37,8 @@ function Payment() {
 
     }, [basket])
 
+    console.log('the secret is ', clientSecret)
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         setProcessing(true)
@@ -50,6 +52,10 @@ function Payment() {
             setSucceeded(true)
             setError(null)
             setProcessing(false)
+
+            dispatch({
+                type: 'EMPTY_BASKET'
+            })
 
             history.replace('/orders')
         })
